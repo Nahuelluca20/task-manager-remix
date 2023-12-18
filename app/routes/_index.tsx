@@ -33,7 +33,9 @@ export default function Component() {
                 <Label className="text-lg font-medium" htmlFor="task1">
                   Finish writing the report
                 </Label>
-                <p className="text-sm text-gray-500 ">Due by 5 PM</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Due by 5 PM
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -44,7 +46,9 @@ export default function Component() {
                 <Label className="text-lg font-medium" htmlFor="task2">
                   Team Meeting
                 </Label>
-                <p className="text-sm text-gray-500 ">Starts at 2 PM</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Starts at 2 PM
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -63,7 +67,9 @@ export default function Component() {
                 <Label className="text-lg font-medium" htmlFor="task3">
                   Submit the proposal
                 </Label>
-                <p className="text-sm text-gray-500">Due by end of day</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Due by end of day
+                </p>
               </div>
             </CardContent>
           </Card>

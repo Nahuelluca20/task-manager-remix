@@ -1,11 +1,6 @@
-import { Button } from "~/components/ui/button";
 import { Badge } from "~/components/ui/badge";
-import { Checkbox } from "~/components/ui/checkbox";
-import { Label } from "~/components/ui/label";
-import { CardContent, Card } from "~/components/ui/card";
 import { Link } from "@remix-run/react";
 import { ActivityIcon, ArchiveIcon, BellIcon, HomeIcon } from "lucide-react";
-import { ModeToggle } from "./mode-toggle";
 
 export default function Sidebard() {
   return (
@@ -16,8 +11,6 @@ export default function Sidebard() {
             <ActivityIcon className="h-6 w-6" />
             <span className="">Task Manager</span>
           </Link>
-
-          <ModeToggle />
         </div>
         <div className="flex-1 overflow-auto py-2">
           <nav className="grid items-start px-4 text-sm font-medium">
