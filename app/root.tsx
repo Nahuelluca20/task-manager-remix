@@ -1,5 +1,4 @@
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
-
 import { cssBundleHref } from "@remix-run/css-bundle";
 import {
   Links,

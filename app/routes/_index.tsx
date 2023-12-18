@@ -16,6 +16,10 @@ export function headers({
   };
 }
 
+import { useDrag } from "react-dnd";
+
+const ItemType = "TASK";
+
 export default function Component() {
   return (
     <main className="flex-1 p-6 flex flex-col gap-6 overflow-x-scroll">
