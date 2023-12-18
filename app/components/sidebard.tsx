@@ -1,8 +1,28 @@
-import { Badge } from "~/components/ui/badge";
 import { Link } from "@remix-run/react";
-import { ActivityIcon, ArchiveIcon, BellIcon, HomeIcon } from "lucide-react";
+import { ActivityIcon, ArchiveIcon, HomeIcon } from "lucide-react";
+import { useLocation } from "@remix-run/react";
+import clsx from "clsx";
+
+const routesLinks = [
+  {
+    name: "Home",
+    path: "/",
+    icon: HomeIcon,
+  },
+  {
+    name: "Tasks",
+    path: "/tasks",
+    icon: ActivityIcon,
+  },
+  {
+    name: "Archive",
+    path: "/archive",
+    icon: ArchiveIcon,
+  },
+];
 
 export default function Sidebard() {
+  const location = useLocation();
   return (
     <div className="hidden border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
       <div className="flex flex-col h-full max-h-screen gap-2">
@@ -14,30 +34,21 @@ export default function Sidebard() {
         </div>
         <div className="flex-1 overflow-auto py-2">
           <nav className="grid items-start px-4 text-sm font-medium">
-            <Link
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-              to="/"
-            >
-              <HomeIcon className="h-4 w-4" />
-              Home
-            </Link>
-            <Link
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-              to="/tasks"
-            >
-              <ActivityIcon className="h-4 w-4" />
-              Tasks
-              <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                12
-              </Badge>
-            </Link>
-            <Link
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-              to="/archive"
-            >
-              <ArchiveIcon className="h-4 w-4" />
-              Archive
-            </Link>
+            {routesLinks.map((route) => (
+              <Link
+                key={route.path}
+                className={clsx(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
+                  location.pathname === route.path
+                    ? "text-gray-900 dark:text-gray-50 bg-gray-200 dark:bg-gray-700"
+                    : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                )}
+                to={route.path}
+              >
+                <route.icon className="h-4 w-4" />
+                {route.name}
+              </Link>
+            ))}
           </nav>
         </div>
       </div>
