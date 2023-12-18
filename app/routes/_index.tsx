@@ -5,6 +5,11 @@ import { CardContent, Card } from "~/components/ui/card";
 import TaskCard from "~/components/task-card";
 import { useState } from "react";
 import { DndContext, closestCenter } from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 export function headers() {
   return {
@@ -12,18 +17,35 @@ export function headers() {
   };
 }
 
+type Tasks = {
+  id: string;
+  title: string;
+  date: string;
+}[];
+
 export default function Component() {
-  const [tasks, setTasks] = useState([
+  const [tasks, setTasks] = useState<Tasks>([
     {
-      taskId: "task1",
+      id: "task1",
       title: "Finish writing the report",
       date: "Due by 5 PM",
     },
-    { taskId: "task2", title: "Hacer lentejas", date: "Due by 7 PM" },
-    { taskId: "task3", title: "Ver la masa madre", date: "Due by 30 PM" },
+    { id: "task2", title: "Hacer lentejas", date: "Due by 7 PM" },
+    { id: "task3", title: "Ver la masa madre", date: "Due by 30 PM" },
   ]);
 
-  function handleDragEnd() {}
+  function handleDragEnd(event: any) {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      setTasks((tasks: Tasks) => {
+        const oldIndex = tasks.findIndex((task) => task.id === active.id);
+        const newIndex = tasks.findIndex((task) => task.id === over.id);
+
+        return arrayMove(tasks, oldIndex, newIndex);
+      });
+    }
+  }
 
   return (
     <main className="flex-1 p-6 flex flex-col gap-6 overflow-x-scroll">
@@ -36,16 +58,20 @@ export default function Component() {
                 Add task
               </Button>
             </div>
-            <TaskCard
-              taskId={"task1"}
-              title={"Finish writing the report"}
-              date="Due by 5 PM"
-            />
-            <TaskCard
-              taskId={"task1"}
-              title={"Finish writing the report 2"}
-              date="Due by 5 PM"
-            />
+
+            <SortableContext
+              items={tasks}
+              strategy={verticalListSortingStrategy}
+            >
+              {tasks.map((task) => (
+                <TaskCard
+                  key={task.id}
+                  taskId={task.id}
+                  title={task.title}
+                  date={task.date}
+                />
+              ))}
+            </SortableContext>
           </div>
 
           <div className="flex flex-col w-72 gap-4">
