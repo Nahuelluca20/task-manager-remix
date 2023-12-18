@@ -1,9 +1,6 @@
-import { Button } from "~/components/ui/button";
-import { Badge } from "~/components/ui/badge";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import { CardContent, Card } from "~/components/ui/card";
-import { Link } from "@remix-run/react";
 
 export default function Component() {
   return (
