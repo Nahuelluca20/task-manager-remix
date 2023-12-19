@@ -35,9 +35,9 @@ export default function Home() {
       <div className="flex items-center">
         <h1 className="font-semibold text-lg md:text-2xl">Today's tasks</h1>
       </div>
-      <div className="border shadow-sm rounded-lg p-4">
+      <div className="border shadow-sm rounded-lg pb-4 px-4 mt-4 mb-4 md:mb-0">
         {tasks.map((task) => (
-          <TaskCard {...task} />
+          <TaskCard key={`task-${task.taskId}`} {...task} />
         ))}
       </div>
       <AddTaskInput />

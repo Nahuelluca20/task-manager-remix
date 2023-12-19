@@ -14,16 +14,16 @@ export default function AddTaskInput() {
   const [date, setDate] = useState<Date>();
 
   return (
-    <div className="flex flex-col mx-auto gap-4">
+    <div className="grid md:flex flex-col md:mx-auto gap-4">
       <Input
-        className="border p-2 rounded-md w-[605px]"
+        className="border p-2 rounded-md w-full md:w-[485px]"
         placeholder="Add Task Title"
         type="text"
       />
-      <div className="flex gap-6">
+      <div className="grid md:flex gap-6">
         <DatePicker date={date} setDate={setDate} />
         <Select>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full md:w-[180px]">
             <SelectValue placeholder="Add Target" />
           </SelectTrigger>
           <SelectContent>

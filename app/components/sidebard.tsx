@@ -2,8 +2,11 @@ import { Link } from "@remix-run/react";
 import {
   ActivityIcon,
   ArchiveIcon,
+  Drum,
   HomeIcon,
   ListChecksIcon,
+  UserIcon,
+  WorkflowIcon,
 } from "lucide-react";
 import { useLocation } from "@remix-run/react";
 import clsx from "clsx";
@@ -15,8 +18,23 @@ const routesLinks = [
     icon: HomeIcon,
   },
   {
-    name: "Tasks",
-    path: "/tasks",
+    name: "Work",
+    path: "/tasks?=work",
+    icon: WorkflowIcon,
+  },
+  {
+    name: "Personal",
+    path: "/tasks?=personal",
+    icon: UserIcon,
+  },
+  {
+    name: "Hobbies",
+    path: "/tasks?=hobbies",
+    icon: Drum,
+  },
+  {
+    name: "Fitness",
+    path: "/tasks?=fitness",
     icon: ActivityIcon,
   },
   {
@@ -28,6 +46,7 @@ const routesLinks = [
 
 export default function Sidebard() {
   const location = useLocation();
+
   return (
     <div className="hidden border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
       <div className="flex flex-col h-full max-h-screen gap-2">
@@ -44,7 +63,8 @@ export default function Sidebard() {
                 key={route.path}
                 className={clsx(
                   "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
-                  location.pathname === route.path
+                  location.pathname === route.path ||
+                    location.pathname + location.search === route.path
                     ? "text-gray-900 dark:text-gray-50 bg-gray-200 dark:bg-gray-700"
                     : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
                 )}
