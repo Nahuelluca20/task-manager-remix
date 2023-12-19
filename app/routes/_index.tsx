@@ -1,3 +1,4 @@
+import AddTaskInput from "~/components/add-task-input";
 import TaskCard from "~/components/task-card";
 
 import { Card, CardContent } from "~/components/ui/card";
@@ -32,13 +33,14 @@ export default function Home() {
   return (
     <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">
       <div className="flex items-center">
-        <h1 className="font-semibold text-lg md:text-2xl">Tasks</h1>
+        <h1 className="font-semibold text-lg md:text-2xl">Today's tasks</h1>
       </div>
       <div className="border shadow-sm rounded-lg p-4">
         {tasks.map((task) => (
           <TaskCard {...task} />
         ))}
       </div>
+      <AddTaskInput />
     </main>
   );
 }

@@ -14,9 +14,11 @@ export default function TaskCard({
   return (
     <Card className="mt-4 pt-2">
       <CardContent className="flex flex-row items-start gap-4">
-        <Checkbox className="mt-1" id={taskId} />
+        <Checkbox className="mt-[2px]" id={taskId} />
         <div className="space-y-1 leading-none">
-          <Label htmlFor={taskId}>{title}</Label>
+          <Label className="text-md" htmlFor={taskId}>
+            {title}
+          </Label>
           <p className="text-sm text-gray-500 dark:text-gray-400">{date}</p>
         </div>
       </CardContent>
