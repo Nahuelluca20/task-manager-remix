@@ -13,6 +13,7 @@ export function headers() {
 
 export const loader: LoaderFunction = async () => {
   const data = getTasks();
+
   return data;
 };
 

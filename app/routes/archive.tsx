@@ -2,7 +2,7 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import { CardContent, Card } from "~/components/ui/card";
 
-export default function Component() {
+export default function Archive() {
   return (
     <main className="flex-1 p-6 flex flex-col gap-6 overflow-x-scroll">
       <h2 className="text-xl font-semibold">Archive</h2>
