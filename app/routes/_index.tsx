@@ -1,5 +1,9 @@
 import AddTaskInput from "~/components/add-task-input";
 import TaskCard from "~/components/task-card";
+import { LoaderFunction } from "@remix-run/node";
+import { getTasks } from "~/lib/queries.server";
+import { useLoaderData } from "@remix-run/react";
+import type { task as TaskType } from "@prisma/client";
 
 export function headers() {
   return {
@@ -7,24 +11,13 @@ export function headers() {
   };
 }
 
+export const loader: LoaderFunction = async () => {
+  const data = getTasks();
+  return data;
+};
+
 export default function Home() {
-  const tasks = [
-    {
-      taskId: "task1",
-      title: "Plan the weekly meeting",
-      date: "Due by 5pm today",
-    },
-    {
-      taskId: "task2",
-      title: "Prepare presentation for client",
-      date: "Due by end of this week",
-    },
-    {
-      taskId: "task3",
-      title: "Update project roadmap",
-      date: "Due by end of this month",
-    },
-  ];
+  const data = useLoaderData<typeof loader>();
 
   return (
     <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">
@@ -32,8 +25,16 @@ export default function Home() {
         <h1 className="font-semibold text-lg md:text-2xl">Today's tasks</h1>
       </div>
       <div className="border shadow-sm rounded-lg pb-4 px-4 mt-4 mb-4 md:mb-0">
-        {tasks.map((task) => (
-          <TaskCard key={`task-${task.taskId}`} {...task} />
+        {data.map((task: TaskType) => (
+          <TaskCard
+            key={`task-${task.id}`}
+            taskId={task.id}
+            title={task.title}
+            date={task.date_to_end}
+            archive={task.archive}
+            complete={task.completed}
+            label={task.title}
+          />
         ))}
       </div>
       <AddTaskInput />

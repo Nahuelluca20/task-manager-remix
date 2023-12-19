@@ -16,4 +16,5 @@ model task {
   date_to_end DateTime
   label       String
   archive     Boolean  @default(false)
+  completed   Boolean  @default(false)
 }
