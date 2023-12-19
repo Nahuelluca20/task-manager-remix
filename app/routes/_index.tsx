@@ -28,11 +28,26 @@ export default function Home() {
       title: "Update project roadmap",
       date: "Due by end of this month",
     },
+    {
+      taskId: "task33",
+      title: "Update project roadmap",
+      date: "Due by end of this month",
+    },
+    {
+      taskId: "task34",
+      title: "Update project roadmap",
+      date: "Due by end of this month",
+    },
+    {
+      taskId: "task36",
+      title: "Update project roadmap",
+      date: "Due by end of this month",
+    },
   ];
 
   return (
     <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">
-      <div className="flex items-center">
+      <div className="flex items-center mt-12 lg:mt-0">
         <h1 className="font-semibold text-lg md:text-2xl">Today's tasks</h1>
       </div>
       <div className="border shadow-sm rounded-lg pb-4 px-4 mt-4 mb-4 md:mb-0">
