@@ -1,8 +1,5 @@
-import { Checkbox } from "~/components/ui/checkbox";
-import { Label } from "~/components/ui/label";
-import { CardContent, Card } from "~/components/ui/card";
 import { LoaderFunction } from "@remix-run/node";
-import { getTaskByLabel, getTasks } from "~/lib/queries.server";
+import { getTaskByLabel } from "~/lib/queries.server";
 import { useLoaderData } from "@remix-run/react";
 import CardTaskArchived from "~/components/card-task-archived";
 import type { task as TaskType } from "@prisma/client";
