@@ -1,10 +1,6 @@
 import AddTaskInput from "~/components/add-task-input";
 import TaskCard from "~/components/task-card";
 
-import { Card, CardContent } from "~/components/ui/card";
-import { Checkbox } from "~/components/ui/checkbox";
-import { Label } from "~/components/ui/label";
-
 export function headers() {
   return {
     "Cache-Control": "public, max-age=60, s-maxage=60",
@@ -25,21 +21,6 @@ export default function Home() {
     },
     {
       taskId: "task3",
-      title: "Update project roadmap",
-      date: "Due by end of this month",
-    },
-    {
-      taskId: "task33",
-      title: "Update project roadmap",
-      date: "Due by end of this month",
-    },
-    {
-      taskId: "task34",
-      title: "Update project roadmap",
-      date: "Due by end of this month",
-    },
-    {
-      taskId: "task36",
       title: "Update project roadmap",
       date: "Due by end of this month",
     },
