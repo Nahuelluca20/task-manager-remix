@@ -1,5 +1,10 @@
 import { Link } from "@remix-run/react";
-import { ActivityIcon, ArchiveIcon, HomeIcon } from "lucide-react";
+import {
+  ActivityIcon,
+  ArchiveIcon,
+  HomeIcon,
+  ListChecksIcon,
+} from "lucide-react";
 import { useLocation } from "@remix-run/react";
 import clsx from "clsx";
 
@@ -28,7 +33,7 @@ export default function Sidebard() {
       <div className="flex flex-col h-full max-h-screen gap-2">
         <div className="flex h-[60px] items-center border-b px-6">
           <Link className="flex items-center gap-2 font-semibold" to="/">
-            <ActivityIcon className="h-6 w-6" />
+            <ListChecksIcon className="h-6 w-6" />
             <span className="">Task Manager</span>
           </Link>
         </div>
