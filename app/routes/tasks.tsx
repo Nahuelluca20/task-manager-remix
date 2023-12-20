@@ -28,7 +28,7 @@ export default function Tasks() {
               date={task.date_to_end}
               archive={task.archive}
               complete={task.completed}
-              label={task.title}
+              label={task.label}
             />
           ))}
         </div>

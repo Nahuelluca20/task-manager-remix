@@ -1,7 +1,7 @@
 import AddTaskInput from "~/components/add-task-input";
 import TaskCard from "~/components/task-card";
-import { LoaderFunction } from "@remix-run/node";
-import { getTasks } from "~/lib/queries.server";
+import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
+import { SwitchTaskStatus, getTasks } from "~/lib/queries.server";
 import { useLoaderData } from "@remix-run/react";
 import type { task as TaskType } from "@prisma/client";
 
@@ -34,7 +34,7 @@ export default function Home() {
             date={task.date_to_end}
             archive={task.archive}
             complete={task.completed}
-            label={task.title}
+            label={task.label}
           />
         ))}
       </div>
@@ -42,3 +42,16 @@ export default function Home() {
     </main>
   );
 }
+
+export const action: ActionFunction = async ({ request }) => {
+  const form = await request.formData();
+  const taskId = form.get("taskId");
+  const complete = form.get("complete");
+  const isCompleted =
+    complete !== null && String(complete).toLowerCase() === "true";
+
+  console.log(isCompleted);
+  await SwitchTaskStatus(String(taskId), isCompleted);
+
+  return redirect(`/`);
+};
