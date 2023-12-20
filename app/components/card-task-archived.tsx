@@ -4,6 +4,7 @@ import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import { Badge } from "./ui/badge";
 import clsx from "clsx";
+import { useFetcher } from "@remix-run/react";
 
 export default function CardTaskArchived({
   title,
@@ -11,6 +12,7 @@ export default function CardTaskArchived({
   taskId,
   label,
   complete,
+  url,
   archive,
 }: {
   title: string;
@@ -19,12 +21,40 @@ export default function CardTaskArchived({
   label: string;
   complete: boolean;
   archive: boolean;
+  url: string;
 }) {
+  const fetcher = useFetcher();
+
   return (
     <Card className="">
       <Badge className="mx-2 mt-4">{label}</Badge>
       <CardContent className="flex flex-row items-start gap-2 px-4">
-        <Checkbox checked={complete} id={taskId} className="mt-2" />
+        <fetcher.Form method="post" action="/completed">
+          <input
+            className="hidden"
+            name="taskId"
+            defaultValue={taskId}
+            type="text"
+          />
+          <input
+            className="hidden"
+            name="complete"
+            defaultValue={String(complete)}
+            type="text"
+          />
+          <input
+            className="hidden"
+            name="redirectPath"
+            defaultValue={url}
+            type="text"
+          />
+          <Checkbox
+            type="submit"
+            checked={complete}
+            className="mt-[5px]"
+            id={taskId}
+          />
+        </fetcher.Form>
         <div className="space-y-1 leading-none">
           <Label
             className={clsx(

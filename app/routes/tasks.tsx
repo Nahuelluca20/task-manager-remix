@@ -14,7 +14,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Tasks() {
   const data = useLoaderData<typeof loader>();
-
   return (
     <main className="flex-1 p-6 flex flex-col gap-6 overflow-x-scroll">
       <h2 className="text-xl font-semibold">Tasks</h2>
@@ -29,6 +28,7 @@ export default function Tasks() {
               archive={task.archive}
               complete={task.completed}
               label={task.label}
+              url={`/tasks?=${task.label}`}
             />
           ))}
         </div>

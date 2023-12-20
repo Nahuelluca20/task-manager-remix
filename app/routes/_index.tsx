@@ -4,6 +4,7 @@ import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { SwitchTaskStatus, getTasks } from "~/lib/queries.server";
 import { useLoaderData } from "@remix-run/react";
 import type { task as TaskType } from "@prisma/client";
+// import TaskCard from "./resources/completed";
 
 export function headers() {
   return {
@@ -42,16 +43,3 @@ export default function Home() {
     </main>
   );
 }
-
-export const action: ActionFunction = async ({ request }) => {
-  const form = await request.formData();
-  const taskId = form.get("taskId");
-  const complete = form.get("complete");
-  const isCompleted =
-    complete !== null && String(complete).toLowerCase() === "true";
-
-  console.log(isCompleted);
-  await SwitchTaskStatus(String(taskId), isCompleted);
-
-  return redirect(`/`);
-};

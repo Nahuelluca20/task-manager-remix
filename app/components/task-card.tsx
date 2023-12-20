@@ -4,7 +4,7 @@ import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import { format } from "date-fns";
 import { Badge } from "./ui/badge";
-import { Form, useFetcher } from "@remix-run/react";
+import { useFetcher } from "@remix-run/react";
 
 export default function TaskCard({
   title,
@@ -26,13 +26,14 @@ export default function TaskCard({
   return (
     <Card className="mt-4 pt-2">
       <CardContent className="flex flex-row items-start gap-4">
-        <fetcher.Form method="post" action="/?index">
+        <fetcher.Form method="post" action="/completed">
           <input
             className="hidden"
             name="taskId"
             defaultValue={taskId}
             type="text"
           />
+
           <input
             className="hidden"
             name="complete"
