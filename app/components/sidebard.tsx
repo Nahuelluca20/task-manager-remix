@@ -66,7 +66,7 @@ export default function Sidebard() {
           </Link>
         </div>
         <div
-          className={"hidden lg:block flex-1 overflow-auto py-2 top-14 w-full"}
+          className={"hidden  lg:block flex-1 overflow-auto py-2 top-14 w-full"}
         >
           <nav className="grid items-start px-4 text-sm font-medium">
             {routesLinks.map((route) => (
@@ -89,7 +89,7 @@ export default function Sidebard() {
         </div>
         <div
           className={clsx(
-            `lg:hidden flex-1 overflow-auto py-2 top-14 w-full`,
+            `lg:hidden flex-1 bg-gray-100 overflow-auto py-2 top-14 w-full`,
             hidden ? "hidden" : "block"
           )}
         >

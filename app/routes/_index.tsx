@@ -1,10 +1,9 @@
 import AddTaskInput from "~/components/add-task-input";
 import TaskCard from "~/components/task-card";
-import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
-import { SwitchTaskStatus, getTasks } from "~/lib/queries.server";
+import { LoaderFunction } from "@remix-run/node";
+import { getTasks } from "~/lib/queries.server";
 import { useLoaderData } from "@remix-run/react";
 import type { task as TaskType } from "@prisma/client";
-// import TaskCard from "./resources/completed";
 
 export function headers() {
   return {

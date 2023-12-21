@@ -16,7 +16,7 @@ export default function Tasks() {
   const data = useLoaderData<typeof loader>();
   return (
     <main className="flex-1 p-6 flex flex-col gap-6 overflow-x-scroll">
-      <h2 className="text-xl font-semibold">Tasks</h2>
+      <h2 className="text-xl font-semibold mt-12 lg:mt-0">Tasks</h2>
       <div className="flex gap-4">
         <div className="flex flex-col w-72 gap-4">
           {data.map((task: TaskType) => (
