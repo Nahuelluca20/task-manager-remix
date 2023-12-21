@@ -12,6 +12,18 @@ export async function getTasks() {
   return tasks;
 }
 
+export async function getArchiveTasks() {
+  const tasks = await db.task.findMany({
+    where: { archive: true },
+    orderBy: [
+      {
+        title: "desc",
+      },
+    ],
+  });
+  return tasks;
+}
+
 export async function getTaskByLabel(label: string) {
   const tasks = await db.task.findMany({
     where: { label: label },

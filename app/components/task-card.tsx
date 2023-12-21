@@ -17,6 +17,7 @@ export default function TaskCard({
   label,
   complete,
   archive,
+  url,
 }: {
   title: string;
   date: Date;
@@ -24,6 +25,7 @@ export default function TaskCard({
   label: string;
   complete: boolean;
   archive: boolean;
+  url: string;
 }) {
   const fetcher = useFetcher();
   const [isCompleted, setIsCompleted] = useState<boolean>(complete);
@@ -102,13 +104,20 @@ export default function TaskCard({
 
             <input
               className="hidden"
+              name="redirectPath"
+              defaultValue={url}
+              type="text"
+            />
+
+            <input
+              className="hidden"
               name="archived"
               defaultValue={String(archive)}
               type="text"
             />
             <Button type="submit" variant="outline" className="gap-2">
               <ArchiveIcon className="h-4 w-4" />
-              Archive
+              {archive ? "Unarchive" : "Archive"}
             </Button>
           </fetcher.Form>
         </div>

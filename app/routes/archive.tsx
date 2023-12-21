@@ -1,40 +1,55 @@
-import { Checkbox } from "~/components/ui/checkbox";
-import { Label } from "~/components/ui/label";
-import { CardContent, Card } from "~/components/ui/card";
+import TaskCard from "~/components/task-card";
+import { LoaderFunction } from "@remix-run/node";
+import { getArchiveTasks } from "~/lib/queries.server";
+import { useLoaderData } from "@remix-run/react";
+import type { task as TaskType } from "@prisma/client";
+
+export function headers() {
+  return {
+    "Cache-Control": "public, max-age=60, s-maxage=60",
+  };
+}
+
+export const loader: LoaderFunction = async () => {
+  const data = getArchiveTasks();
+
+  return data;
+};
 
 export default function Archive() {
-  return (
-    <main className="flex-1 p-6 flex flex-col gap-6 overflow-x-scroll">
-      <h2 className="text-xl font-semibold">Archive</h2>
-      <div className="flex gap-4">
-        <div className="flex flex-col w-72 gap-4">
-          <Card>
-            <CardContent className="flex flex-row items-start gap-2 p-4">
-              <Checkbox disabled id="task1" />
-              <div className="space-y-1 leading-none">
-                <Label className="text-lg font-medium" htmlFor="task1">
-                  Task 1
-                </Label>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Archived on 20th Dec 2023
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="flex flex-row items-start gap-2 p-4">
-              <Checkbox disabled id="task2" />
-              <div className="space-y-1 leading-none">
-                <Label className="text-lg font-medium" htmlFor="task2">
-                  Task 2
-                </Label>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Archived on 15th Dec 2023
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+  const data = useLoaderData<typeof loader>();
+
+  if (data.length <= 0) {
+    return (
+      <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">
+        <div className="flex items-center mt-12 lg:mt-0">
+          <h1 className="font-semibold text-lg md:text-2xl">Today's tasks</h1>
         </div>
+        <div className="border shadow-sm rounded-lg py-6">
+          <p className="text-center font-bold text-lg">No tasks found.</p>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">
+      <div className="flex items-center mt-12 lg:mt-0">
+        <h1 className="font-semibold text-lg md:text-2xl">Today's tasks</h1>
+      </div>
+      <div className="border shadow-sm rounded-lg pb-4 px-4 mt-4 mb-4 md:mb-0">
+        {data.map((task: TaskType) => (
+          <TaskCard
+            url="/archive"
+            key={`task-${task.id}`}
+            taskId={task.id}
+            title={task.title}
+            date={task.date_to_end}
+            archive={task.archive}
+            complete={task.completed}
+            label={task.label}
+          />
+        ))}
       </div>
     </main>
   );

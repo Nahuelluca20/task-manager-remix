@@ -20,6 +20,19 @@ export const loader: LoaderFunction = async () => {
 export default function Home() {
   const data = useLoaderData<typeof loader>();
 
+  if (data.length <= 0) {
+    return (
+      <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">
+        <div className="flex items-center mt-12 lg:mt-0">
+          <h1 className="font-semibold text-lg md:text-2xl">Today's tasks</h1>
+        </div>
+        <div className="border shadow-sm rounded-lg py-6">
+          <p className="text-center font-bold text-lg">No tasks found.</p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">
       <div className="flex items-center mt-12 lg:mt-0">
@@ -35,6 +48,7 @@ export default function Home() {
             archive={task.archive}
             complete={task.completed}
             label={task.label}
+            url="/"
           />
         ))}
       </div>
