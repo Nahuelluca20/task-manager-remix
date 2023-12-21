@@ -4,7 +4,9 @@ import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import { format } from "date-fns";
 import { Badge } from "./ui/badge";
-import { useFetcher } from "@remix-run/react";
+import { useFetcher, useNavigation } from "@remix-run/react";
+import { useState } from "react";
+import Spinner from "./spinner";
 
 export default function TaskCard({
   title,
@@ -22,6 +24,15 @@ export default function TaskCard({
   archive: boolean;
 }) {
   const fetcher = useFetcher();
+  const [isCompleted, setIsCompleted] = useState<boolean>(complete);
+  const isSubmitting = fetcher.state === "submitting";
+
+  const handleCheckboxChange = () => {
+    // Update the UI optimistically
+    setIsCompleted(!isCompleted);
+    // Make the server request
+    fetcher.submit({ method: "post", action: "/completed" });
+  };
 
   return (
     <Card className="mt-4 pt-2">
@@ -37,27 +48,35 @@ export default function TaskCard({
           <input
             className="hidden"
             name="complete"
-            defaultValue={String(complete)}
+            defaultValue={String(!isCompleted)}
             type="text"
           />
           <Checkbox
             type="submit"
-            checked={complete}
+            onCheckedChange={handleCheckboxChange}
+            checked={isCompleted}
             className="mt-[5px]"
             id={taskId}
           />
         </fetcher.Form>
         <div className="space-y-1 space-x-2 leading-none">
-          <Label
-            className={clsx(
-              "text-md font-medium",
-              complete ? "text-gray-600 line-through decoration-[3px]" : ""
-            )}
-            htmlFor={taskId}
-          >
-            {title}
-          </Label>
-          <Badge className="">{label}</Badge>
+          <div className="flex items-center gap-2">
+            <Label
+              className={clsx(
+                "text-md font-medium",
+                !isCompleted && isSubmitting
+                  ? ""
+                  : isCompleted || isSubmitting
+                  ? "text-gray-600 line-through decoration-[3px]"
+                  : ""
+              )}
+              htmlFor={taskId}
+            >
+              {title}
+            </Label>
+            <Badge className="max-h-6">{label}</Badge>
+            {isSubmitting && <Spinner className="h-5 w-5" />}
+          </div>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             terminar antes del {format(new Date(date), "dd/MM/yyyy")}
           </p>
