@@ -53,6 +53,14 @@ export default function TaskCard({
             defaultValue={String(!isCompleted)}
             type="text"
           />
+
+          <input
+            className="hidden"
+            name="archived"
+            defaultValue={String(archive)}
+            type="text"
+          />
+
           <Checkbox
             type="submit"
             onCheckedChange={handleCheckboxChange}
@@ -84,10 +92,25 @@ export default function TaskCard({
           </p>
         </div>
         <div className="flex flex-grow justify-end">
-          <Button variant="outline" className="gap-2">
-            <ArchiveIcon className="h-4 w-4" />
-            Archive
-          </Button>
+          <fetcher.Form method="post" action="/set-archive">
+            <input
+              className="hidden"
+              name="taskId"
+              defaultValue={taskId}
+              type="text"
+            />
+
+            <input
+              className="hidden"
+              name="archived"
+              defaultValue={String(archive)}
+              type="text"
+            />
+            <Button type="submit" variant="outline" className="gap-2">
+              <ArchiveIcon className="h-4 w-4" />
+              Archive
+            </Button>
+          </fetcher.Form>
         </div>
       </CardContent>
     </Card>
