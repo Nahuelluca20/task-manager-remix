@@ -7,6 +7,8 @@ import { Badge } from "./ui/badge";
 import { useFetcher, useNavigation } from "@remix-run/react";
 import { useState } from "react";
 import Spinner from "./spinner";
+import { Button } from "./ui/button";
+import { ArchiveIcon } from "lucide-react";
 
 export default function TaskCard({
   title,
@@ -31,13 +33,13 @@ export default function TaskCard({
     // Update the UI optimistically
     setIsCompleted(!isCompleted);
     // Make the server request
-    fetcher.submit({ method: "post", action: "/completed" });
+    fetcher.submit({ method: "post", action: "/set-completed" });
   };
 
   return (
     <Card className="mt-4 pt-2">
-      <CardContent className="flex flex-row items-start gap-4">
-        <fetcher.Form method="post" action="/completed">
+      <CardContent className="flex flex-wrap flex-row items-start gap-4">
+        <fetcher.Form method="post" action="/set-completed">
           <input
             className="hidden"
             name="taskId"
@@ -63,7 +65,7 @@ export default function TaskCard({
           <div className="flex items-center gap-2">
             <Label
               className={clsx(
-                "text-md font-medium",
+                "text-sm sm:text-base font-medium",
                 !isCompleted && isSubmitting
                   ? ""
                   : isCompleted || isSubmitting
@@ -80,6 +82,12 @@ export default function TaskCard({
           <p className="text-sm text-gray-500 dark:text-gray-400">
             terminar antes del {format(new Date(date), "dd/MM/yyyy")}
           </p>
+        </div>
+        <div className="flex flex-grow justify-end">
+          <Button variant="outline" className="gap-2">
+            <ArchiveIcon className="h-4 w-4" />
+            Archive
+          </Button>
         </div>
       </CardContent>
     </Card>

@@ -33,7 +33,7 @@ export default function CardTaskArchived({
     // Update the UI optimistically
     setIsCompleted(!isCompleted);
     // Make the server request
-    fetcher.submit({ method: "post", action: "/completed" });
+    fetcher.submit({ method: "post", action: "/set-completed" });
   };
 
   return (
@@ -43,7 +43,7 @@ export default function CardTaskArchived({
         {isSubmitting && <Spinner className="h-5 w-5" />}
       </div>
       <CardContent className="flex flex-row items-start gap-2 px-4">
-        <fetcher.Form method="post" action="/completed">
+        <fetcher.Form method="post" action="/set-completed">
           <input
             className="hidden"
             name="taskId"
