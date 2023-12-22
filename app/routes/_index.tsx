@@ -3,6 +3,8 @@ import TaskCard from "~/components/task-card";
 import { LoaderFunction } from "@remix-run/node";
 import { getTasks } from "~/lib/queries.server";
 import { useLoaderData } from "@remix-run/react";
+import { ActionFunction, redirect } from "@remix-run/node";
+import { createTask } from "~/lib/queries.server";
 import type { task as TaskType } from "@prisma/client";
 
 export function headers() {
@@ -56,3 +58,28 @@ export default function Home() {
     </main>
   );
 }
+
+export const action: ActionFunction = async ({ request }) => {
+  const form = await request.formData();
+
+  const title = form.get("title");
+  const date = form.get("date");
+  const label = form.get("label");
+
+  if (title && date && label) {
+    const parsedDate = new Date(date.toString());
+
+    if (!isNaN(parsedDate.getTime())) {
+      // La fecha es válida, puedes continuar con tu lógica
+      await createTask(String(title), parsedDate, String(label));
+
+      return redirect("/");
+    } else {
+      console.error("The date is invalid");
+    }
+  } else {
+    console.error("Fields are missing from the form");
+  }
+
+  return redirect("/error");
+};

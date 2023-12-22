@@ -48,3 +48,19 @@ export async function setTaskArchive(id: string, isArchived: boolean) {
 
   return task;
 }
+
+export async function createTask(
+  title: string,
+  dateToEnd: Date,
+  label: string
+) {
+  const task = await db.task.create({
+    data: {
+      title: title,
+      date_to_end: dateToEnd,
+      label: label,
+    },
+  });
+
+  return task;
+}
