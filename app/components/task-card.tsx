@@ -83,7 +83,7 @@ export default function TaskCard({
           </p>
         </div>
         <div className="flex flex-grow gap-2 justify-end">
-          <fetcher.Form method="post" action="/set-archive">
+          <fetcher.Form method="post" action="/card-actions">
             <input type="hidden" name="action" value="archive" />
             <input type="hidden" name="taskId" defaultValue={taskId} />
             <input type="hidden" name="redirectPath" defaultValue={url} />
@@ -98,7 +98,7 @@ export default function TaskCard({
               {archive ? "Unarchive" : "Archive"}
             </Button>
           </fetcher.Form>
-          <fetcher.Form method="post" action="/set-archive">
+          <fetcher.Form method="post" action="/card-actions">
             <input type="hidden" name="action" value="delete" />
             <input type="hidden" name="taskId" defaultValue={taskId} />
             <input type="hidden" name="redirectPath" defaultValue={url} />
