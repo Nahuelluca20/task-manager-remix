@@ -4,12 +4,6 @@ import { useLoaderData } from "@remix-run/react";
 import CardTaskArchived from "~/components/card-task-archived";
 import type { task as TaskType } from "@prisma/client";
 
-export function headers() {
-  return {
-    "Cache-Control": "public, max-age=60, s-maxage=60",
-  };
-}
-
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const query = url.searchParams.get("");

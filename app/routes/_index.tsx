@@ -7,12 +7,6 @@ import { ActionFunction, redirect } from "@remix-run/node";
 import { createTask } from "~/lib/queries.server";
 import type { task as TaskType } from "@prisma/client";
 
-export function headers() {
-  return {
-    "Cache-Control": "public, max-age=60, s-maxage=60",
-  };
-}
-
 export const loader: LoaderFunction = async () => {
   const data = getTasks();
 
