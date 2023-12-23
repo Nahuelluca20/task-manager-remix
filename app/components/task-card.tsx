@@ -4,11 +4,11 @@ import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import { format } from "date-fns";
 import { Badge } from "./ui/badge";
-import { useFetcher, useNavigation } from "@remix-run/react";
+import { useFetcher } from "@remix-run/react";
 import { useState } from "react";
 import Spinner from "./spinner";
 import { Button } from "./ui/button";
-import { ArchiveIcon } from "lucide-react";
+import { ArchiveIcon, Trash } from "lucide-react";
 
 export default function TaskCard({
   title,
@@ -42,26 +42,15 @@ export default function TaskCard({
     <Card className="mt-4 pt-2">
       <CardContent className="flex flex-wrap flex-row items-start gap-4">
         <fetcher.Form method="post" action="/set-completed">
-          <input
-            className="hidden"
-            name="taskId"
-            defaultValue={taskId}
-            type="text"
-          />
+          <input type="hidden" name="taskId" defaultValue={taskId} />
 
           <input
-            className="hidden"
+            type="hidden"
             name="complete"
             defaultValue={String(!isCompleted)}
-            type="text"
           />
 
-          <input
-            className="hidden"
-            name="archived"
-            defaultValue={String(archive)}
-            type="text"
-          />
+          <input type="hidden" name="archived" defaultValue={String(archive)} />
 
           <Checkbox
             type="submit"
@@ -93,31 +82,36 @@ export default function TaskCard({
             terminar antes del {format(new Date(date), "dd/MM/yyyy")}
           </p>
         </div>
-        <div className="flex flex-grow justify-end">
+        <div className="flex flex-grow gap-2 justify-end">
           <fetcher.Form method="post" action="/set-archive">
-            <input
-              className="hidden"
-              name="taskId"
-              defaultValue={taskId}
-              type="text"
-            />
+            <input type="hidden" name="action" value="archive" />
+            <input type="hidden" name="taskId" defaultValue={taskId} />
+            <input type="hidden" name="redirectPath" defaultValue={url} />
 
             <input
-              className="hidden"
-              name="redirectPath"
-              defaultValue={url}
-              type="text"
-            />
-
-            <input
-              className="hidden"
+              type="hidden"
               name="archived"
               defaultValue={String(archive)}
-              type="text"
             />
             <Button type="submit" variant="outline" className="gap-2">
               <ArchiveIcon className="h-4 w-4" />
               {archive ? "Unarchive" : "Archive"}
+            </Button>
+          </fetcher.Form>
+          <fetcher.Form method="post" action="/set-archive">
+            <input type="hidden" name="action" value="delete" />
+            <input type="hidden" name="taskId" defaultValue={taskId} />
+            <input type="hidden" name="redirectPath" defaultValue={url} />
+
+            <input
+              type="hidden"
+              name="archived"
+              defaultValue={String(archive)}
+            />
+
+            <Button variant={"destructive"} className="gap-2">
+              <Trash className="h-4 w-4" />
+              Delete
             </Button>
           </fetcher.Form>
         </div>

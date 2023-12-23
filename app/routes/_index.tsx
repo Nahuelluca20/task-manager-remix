@@ -70,7 +70,6 @@ export const action: ActionFunction = async ({ request }) => {
     const parsedDate = new Date(date.toString());
 
     if (!isNaN(parsedDate.getTime())) {
-      // La fecha es válida, puedes continuar con tu lógica
       await createTask(String(title), parsedDate, String(label));
 
       return redirect("/");

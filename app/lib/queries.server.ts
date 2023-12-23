@@ -64,3 +64,11 @@ export async function createTask(
 
   return task;
 }
+
+export async function deleteTask(taskId: string) {
+  const task = await db.task.delete({
+    where: { id: taskId },
+  });
+
+  return task;
+}
