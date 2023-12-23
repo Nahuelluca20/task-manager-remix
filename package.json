@@ -4,9 +4,10 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "remix build",
+    "build": "prisma generate && remix build",
     "dev": "remix dev",
     "start": "netlify serve",
+    "postinstall": "prisma generate",
     "typecheck": "tsc -b"
   },
   "dependencies": {
