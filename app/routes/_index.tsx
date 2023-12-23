@@ -40,6 +40,7 @@ export default function Home() {
       <div className="flex items-center mt-12 lg:mt-0">
         <h1 className="font-semibold text-lg md:text-2xl">Today's tasks</h1>
       </div>
+
       <div className="border shadow-sm rounded-lg pb-4 px-4 mt-4 mb-4 md:mb-0">
         {data.map((task: TaskType) => (
           <TaskCard
