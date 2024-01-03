@@ -16,39 +16,32 @@ export const loader: LoaderFunction = async () => {
 export default function Home() {
   const data = useLoaderData<typeof loader>();
 
-  if (data.length <= 0) {
-    return (
-      <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">
-        <div className="flex items-center mt-12 lg:mt-0">
-          <h1 className="font-semibold text-lg md:text-2xl">Today's tasks</h1>
-        </div>
-        <div className="border shadow-sm rounded-lg py-6">
-          <p className="text-center font-bold text-lg">No tasks found.</p>
-        </div>
-      </main>
-    );
-  }
-
   return (
     <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">
       <div className="flex items-center mt-12 lg:mt-0">
         <h1 className="font-semibold text-lg md:text-2xl">Today's tasks</h1>
       </div>
+      {data.length <= 0 ? (
+        <div className="border shadow-sm rounded-lg py-6">
+          <p className="text-center font-bold text-lg">No tasks found.</p>
+        </div>
+      ) : (
+        <div className="border shadow-sm rounded-lg pb-4 px-4 mt-4 mb-4 md:mb-0">
+          {data.map((task: TaskType) => (
+            <TaskCard
+              key={`task-${task.id}`}
+              taskId={task.id}
+              title={task.title}
+              date={task.date_to_end}
+              archive={task.archive}
+              complete={task.completed}
+              label={task.label}
+              url="/"
+            />
+          ))}
+        </div>
+      )}
 
-      <div className="border shadow-sm rounded-lg pb-4 px-4 mt-4 mb-4 md:mb-0">
-        {data.map((task: TaskType) => (
-          <TaskCard
-            key={`task-${task.id}`}
-            taskId={task.id}
-            title={task.title}
-            date={task.date_to_end}
-            archive={task.archive}
-            complete={task.completed}
-            label={task.label}
-            url="/"
-          />
-        ))}
-      </div>
       <AddTaskInput />
     </main>
   );
