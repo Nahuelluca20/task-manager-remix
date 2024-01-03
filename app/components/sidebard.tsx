@@ -11,6 +11,7 @@ import {
 import { useLocation } from "@remix-run/react";
 import clsx from "clsx";
 import { useState } from "react";
+
 import { Button } from "./ui/button";
 
 const routesLinks = [
@@ -46,13 +47,13 @@ const routesLinks = [
   },
 ];
 
-export default function Sidebard() {
+export default function Sidebard({ children }: { children?: React.ReactNode }) {
   const location = useLocation();
   const [hidden, setHidden] = useState<boolean>(true);
 
   return (
     <div className="fixed lg:sticky w-full z-10 bg-gray-100 border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
-      <div className="flex flex-col lg:h-full lg:max-h-screen gap-2">
+      <div className="flex flex-col lg:h-full lg:max-h-screen gap-2 bg-gray-100">
         <div className="flex gap-2 h-[60px] items-center border-b px-6">
           <Button
             onClick={() => setHidden(!hidden)}
@@ -85,6 +86,7 @@ export default function Sidebard() {
                 {route.name}
               </Link>
             ))}
+            {children}
           </nav>
         </div>
         <div
@@ -111,6 +113,7 @@ export default function Sidebard() {
                 {route.name}
               </Link>
             ))}
+            {children}
           </nav>
         </div>
       </div>
