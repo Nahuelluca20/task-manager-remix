@@ -15,14 +15,19 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useRevalidator,
 } from "@remix-run/react";
 
 import styles from "./tailwind.css";
 import Sidebard from "./components/sidebard";
 import { createClient } from "@supabase/supabase-js";
-import { useState } from "react";
-import { createServerClient } from "@supabase/auth-helpers-remix";
+import { useEffect, useState } from "react";
+import {
+  createBrowserClient,
+  createServerClient,
+} from "@supabase/auth-helpers-remix";
 import { Button } from "./components/ui/button";
+import { getSupabaseClient } from "./lib/supabase.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
@@ -37,20 +42,63 @@ export const meta: MetaFunction = () => [
   },
 ];
 
-export const loader: LoaderFunction = () => {
+export const loader: LoaderFunction = async ({
+  request,
+}: LoaderFunctionArgs) => {
   const env = {
     SUPABASE_URL: process.env.SUPABASE_URL!,
     SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
   };
 
-  return { env };
+  const response = new Response();
+
+  const supabaseClient = getSupabaseClient(request, response);
+
+  const {
+    data: { session },
+  } = await supabaseClient.auth.getSession();
+
+  return json(
+    {
+      env,
+      session,
+    },
+    {
+      headers: response.headers,
+    }
+  );
 };
 
 export default function App() {
-  const { env } = useLoaderData<typeof loader>();
+  const { env, session } = useLoaderData<typeof loader>();
+  const { revalidate } = useRevalidator();
   const [supabase] = useState(() =>
-    createClient(env.SUPABASE_URL!, env.SUPABASE_ANON_KEY!)
+    createBrowserClient(env.SUPABASE_URL!, env.SUPABASE_ANON_KEY!)
   );
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+  const serverAccessToken = session?.access_token;
+
+  const user = session?.user;
+
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (
+        event !== "INITIAL_SESSION" &&
+        session?.access_token !== serverAccessToken
+      ) {
+        revalidate();
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [serverAccessToken, supabase, revalidate]);
 
   return (
     <html lang="en">
@@ -63,19 +111,16 @@ export default function App() {
       <body>
         <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
           <Sidebard>
-            {/* {supabase.auth.getUser() ? ( */}
             <div className="gap-2 w-full md:w-fit grid md:flex py-5">
-              <Button asChild>
-                <Link to={"/logout"}>LogOut</Link>
-              </Button>
-              {/* ) : ( */}
-              <Button asChild>
-                <Link to={"/login"}>LogIn</Link>
-              </Button>
+              <Button onClick={handleLogout}>Logout</Button>
+              {!user && (
+                <Button asChild>
+                  <Link to={"/login"}>Login</Link>
+                </Button>
+              )}
             </div>
-            {/* )} */}
           </Sidebard>
-          <Outlet context={supabase} />
+          <Outlet context={{ supabase }} />
         </div>
         <ScrollRestoration />
         <Scripts />

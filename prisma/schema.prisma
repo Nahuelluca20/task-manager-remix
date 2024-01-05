@@ -18,4 +18,5 @@ model task {
   label       String
   archive     Boolean  @default(false)
   completed   Boolean  @default(false)
+  user_id     String?
 }

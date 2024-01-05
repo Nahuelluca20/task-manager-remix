@@ -1,14 +1,26 @@
 import AddTaskInput from "~/components/add-task-input";
 import TaskCard from "~/components/task-card";
-import { LoaderFunction } from "@remix-run/node";
+import { LoaderFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { getTasks } from "~/lib/queries.server";
 import { useLoaderData } from "@remix-run/react";
 import { ActionFunction, redirect } from "@remix-run/node";
 import { createTask } from "~/lib/queries.server";
 import type { task as TaskType } from "@prisma/client";
+import { createServerClient } from "@supabase/auth-helpers-remix";
+import { getSupabaseClient } from "~/lib/supabase.server";
 
-export const loader: LoaderFunction = async () => {
-  const data = getTasks();
+export const loader: LoaderFunction = async ({
+  request,
+}: LoaderFunctionArgs) => {
+  const response = new Response();
+
+  const supabaseClient = getSupabaseClient(request, response);
+
+  const {
+    data: { session },
+  } = await supabaseClient.auth.getSession();
+
+  const data = await getTasks(session?.user?.id ?? undefined);
 
   return data;
 };
@@ -48,6 +60,14 @@ export default function Home() {
 }
 
 export const action: ActionFunction = async ({ request }) => {
+  const response = new Response();
+
+  const supabaseClient = getSupabaseClient(request, response);
+
+  const {
+    data: { session },
+  } = await supabaseClient.auth.getSession();
+
   const form = await request.formData();
 
   const title = form.get("title");
@@ -58,7 +78,12 @@ export const action: ActionFunction = async ({ request }) => {
     const parsedDate = new Date(date.toString());
 
     if (!isNaN(parsedDate.getTime())) {
-      await createTask(String(title), parsedDate, String(label));
+      await createTask(
+        String(title),
+        parsedDate,
+        String(label),
+        session?.user?.id ?? undefined
+      );
 
       return redirect("/");
     } else {

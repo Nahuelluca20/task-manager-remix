@@ -1,8 +1,21 @@
 import db from "~/lib/db.server";
 
-export async function getTasks() {
+export async function getTasks(userId?: string) {
   const tasks = await db.task.findMany({
-    where: { archive: false },
+    where: { archive: false, user_id: userId || null },
+    orderBy: [
+      {
+        title: "desc",
+      },
+    ],
+  });
+
+  return tasks;
+}
+
+export async function getArchiveTasks(userId?: string) {
+  const tasks = await db.task.findMany({
+    where: { archive: true, user_id: userId || null },
     orderBy: [
       {
         title: "desc",
@@ -12,21 +25,9 @@ export async function getTasks() {
   return tasks;
 }
 
-export async function getArchiveTasks() {
+export async function getTaskByLabel(label: string, userId?: string) {
   const tasks = await db.task.findMany({
-    where: { archive: true },
-    orderBy: [
-      {
-        title: "desc",
-      },
-    ],
-  });
-  return tasks;
-}
-
-export async function getTaskByLabel(label: string) {
-  const tasks = await db.task.findMany({
-    where: { label: label },
+    where: { label: label, user_id: userId || null },
   });
   return tasks;
 }
@@ -52,13 +53,15 @@ export async function setTaskArchive(id: string, isArchived: boolean) {
 export async function createTask(
   title: string,
   dateToEnd: Date,
-  label: string
+  label: string,
+  userId?: string
 ) {
   const task = await db.task.create({
     data: {
       title: title,
       date_to_end: dateToEnd,
       label: label,
+      user_id: userId || null,
     },
   });
 

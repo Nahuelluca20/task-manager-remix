@@ -1,8 +1,9 @@
 import TaskCard from "~/components/task-card";
-import { LoaderFunction } from "@remix-run/node";
+import { LoaderFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { getArchiveTasks } from "~/lib/queries.server";
 import { useLoaderData } from "@remix-run/react";
 import type { task as TaskType } from "@prisma/client";
+import { getSupabaseClient } from "~/lib/supabase.server";
 
 export function headers() {
   return {
@@ -10,8 +11,18 @@ export function headers() {
   };
 }
 
-export const loader: LoaderFunction = async () => {
-  const data = getArchiveTasks();
+export const loader: LoaderFunction = async ({
+  request,
+}: LoaderFunctionArgs) => {
+  const response = new Response();
+
+  const supabaseClient = getSupabaseClient(request, response);
+
+  const {
+    data: { session },
+  } = await supabaseClient.auth.getSession();
+
+  const data = await getArchiveTasks(session?.user?.id ?? undefined);
 
   return data;
 };
