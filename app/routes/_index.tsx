@@ -9,10 +9,8 @@ import type { task as TaskType } from "@prisma/client";
 import { getSupabaseClient } from "~/lib/supabase.server";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -32,8 +30,6 @@ export const loader: LoaderFunction = async ({
     data: { session },
   } = await supabaseClient.auth.getSession();
   const data = await getTasks(session?.user?.id ?? undefined);
-
-  console.log(data);
 
   return data;
 };
