@@ -62,7 +62,7 @@ export default function Home() {
       </div>
 
       {data.length <= 0 ? (
-        <div className="border shadow-sm rounded-lg py-6">
+        <div className="border shadow-sm rounded-lg mt-4 py-6">
           <p className="text-center font-bold text-lg">No tasks found.</p>
         </div>
       ) : (

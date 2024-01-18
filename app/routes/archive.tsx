@@ -4,6 +4,8 @@ import { getArchiveTasks } from "~/lib/queries.server";
 import { useLoaderData } from "@remix-run/react";
 import type { task as TaskType } from "@prisma/client";
 import { getSupabaseClient } from "~/lib/supabase.server";
+import { utcToZonedTime } from "date-fns-tz";
+import { format } from "date-fns";
 
 export function headers() {
   return {
@@ -32,11 +34,11 @@ export default function Archive() {
 
   if (data.length <= 0) {
     return (
-      <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">
+      <main className="flex-1 mt-4 flex flex-col p-4 md:gap-8 md:p-6">
         <div className="flex items-center mt-12 lg:mt-0">
-          <h1 className="font-semibold text-lg md:text-2xl">Today's tasks</h1>
+          <h1 className="font-semibold text-lg md:text-2xl">Archive tasks</h1>
         </div>
-        <div className="border shadow-sm rounded-lg py-6">
+        <div className="border shadow-sm rounded-lg py-6 mt-4">
           <p className="text-center font-bold text-lg">No tasks found.</p>
         </div>
       </main>
@@ -55,7 +57,7 @@ export default function Archive() {
             key={`task-${task.id}`}
             taskId={task.id}
             title={task.title}
-            date={task.date_to_end}
+            date={format(utcToZonedTime(task.date_to_end, "UTC"), "dd/MM/yyyy")}
             archive={task.archive}
             complete={task.completed}
             label={task.label}
