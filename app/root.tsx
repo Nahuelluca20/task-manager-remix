@@ -20,12 +20,8 @@ import {
 
 import styles from "./tailwind.css";
 import Sidebard from "./components/sidebard";
-import { createClient } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
-import {
-  createBrowserClient,
-  createServerClient,
-} from "@supabase/auth-helpers-remix";
+import { createBrowserClient } from "@supabase/auth-helpers-remix";
 import { Button } from "./components/ui/button";
 import { getSupabaseClient } from "./lib/supabase.server";
 

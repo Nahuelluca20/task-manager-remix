@@ -6,8 +6,18 @@ import { useLoaderData } from "@remix-run/react";
 import { ActionFunction, redirect } from "@remix-run/node";
 import { createTask } from "~/lib/queries.server";
 import type { task as TaskType } from "@prisma/client";
-import { createServerClient } from "@supabase/auth-helpers-remix";
 import { getSupabaseClient } from "~/lib/supabase.server";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "~/components/ui/drawer";
+import { Button } from "~/components/ui/button";
 
 export const loader: LoaderFunction = async ({
   request,
@@ -30,9 +40,24 @@ export default function Home() {
 
   return (
     <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">
-      <div className="flex items-center mt-12 lg:mt-0">
-        <h1 className="font-semibold text-lg md:text-2xl">Today's tasks</h1>
+      <div className="flex mt-16 lg:mt-0  w-full justify-between">
+        <h1 className=" font-semibold text-lg md:text-2xl">Today's tasks</h1>
+        <Drawer>
+          <DrawerTrigger>
+            <Button>Add Tasks</Button>
+          </DrawerTrigger>
+          <DrawerContent className="lg:h-[700px] lg:w-[700px]">
+            <DrawerHeader className="md:p-0 md:mx-auto md:w-[484px]">
+              <DrawerTitle>Add new Task</DrawerTitle>
+              <DrawerDescription>Select label and date</DrawerDescription>
+            </DrawerHeader>
+            <div className="p-5">
+              <AddTaskInput />
+            </div>
+          </DrawerContent>
+        </Drawer>
       </div>
+
       {data.length <= 0 ? (
         <div className="border shadow-sm rounded-lg py-6">
           <p className="text-center font-bold text-lg">No tasks found.</p>
@@ -53,8 +78,6 @@ export default function Home() {
           ))}
         </div>
       )}
-
-      <AddTaskInput />
     </main>
   );
 }
