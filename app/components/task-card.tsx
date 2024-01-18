@@ -2,7 +2,8 @@ import clsx from "clsx";
 import { Card, CardContent } from "./ui/card";
 import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 import { Badge } from "./ui/badge";
 import { useFetcher } from "@remix-run/react";
 import { useState } from "react";
@@ -20,7 +21,7 @@ export default function TaskCard({
   url,
 }: {
   title: string;
-  date: Date;
+  date: string;
   taskId: string;
   label: string;
   complete: boolean;
@@ -79,7 +80,7 @@ export default function TaskCard({
             {isSubmitting && <Spinner className="h-5 w-5" />}
           </div>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            terminar antes del {format(new Date(date), "dd/MM/yyyy")}
+            terminar antes del {date}
           </p>
         </div>
         <div className="flex flex-grow gap-2 justify-end">

@@ -18,6 +18,8 @@ import {
   DrawerTrigger,
 } from "~/components/ui/drawer";
 import { Button } from "~/components/ui/button";
+import { format } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
 export const loader: LoaderFunction = async ({
   request,
@@ -29,8 +31,9 @@ export const loader: LoaderFunction = async ({
   const {
     data: { session },
   } = await supabaseClient.auth.getSession();
-
   const data = await getTasks(session?.user?.id ?? undefined);
+
+  console.log(data);
 
   return data;
 };
@@ -69,7 +72,10 @@ export default function Home() {
               key={`task-${task.id}`}
               taskId={task.id}
               title={task.title}
-              date={task.date_to_end}
+              date={format(
+                utcToZonedTime(task.date_to_end, "UTC"),
+                "dd/MM/yyyy"
+              )}
               archive={task.archive}
               complete={task.completed}
               label={task.label}
