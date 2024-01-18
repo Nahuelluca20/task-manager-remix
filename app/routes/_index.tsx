@@ -49,7 +49,7 @@ export default function Home() {
           <DrawerTrigger>
             <Button>Add Tasks</Button>
           </DrawerTrigger>
-          <DrawerContent className="lg:h-[700px] lg:w-[700px]">
+          <DrawerContent className="lg:h-[700px] lg:ml-auto lg:w-[700px]">
             <DrawerHeader className="md:p-0 md:mx-auto md:w-[484px]">
               <DrawerTitle>Add new Task</DrawerTitle>
               <DrawerDescription>Select label and date</DrawerDescription>
