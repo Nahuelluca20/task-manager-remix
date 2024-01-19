@@ -1,6 +1,6 @@
 import AddTaskInput from "~/components/add-task-input";
 import TaskCard from "~/components/task-card";
-import { LoaderFunction, LoaderFunctionArgs } from "@remix-run/node";
+import { LoaderFunction, LoaderFunctionArgs, json } from "@remix-run/node";
 import { getTasks } from "~/lib/queries.server";
 import { useLoaderData } from "@remix-run/react";
 import { ActionFunction, redirect } from "@remix-run/node";
@@ -31,20 +31,21 @@ export const loader: LoaderFunction = async ({
   } = await supabaseClient.auth.getSession();
   const data = await getTasks(session?.user?.id ?? undefined);
 
-  return data;
+  return json({ data, ok: true });
+  // return data;
 };
 
 export default function Home() {
-  const data = useLoaderData<typeof loader>();
+  const { data } = useLoaderData<typeof loader>();
 
   return (
     <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">
       <div className="flex mt-16 lg:mt-0  w-full justify-between">
         <h1 className=" font-semibold text-lg md:text-2xl">Today's tasks</h1>
         <Drawer>
-          <DrawerTrigger>
-            <Button>Add Tasks</Button>
-          </DrawerTrigger>
+          <Button asChild>
+            <DrawerTrigger>Add Tasks</DrawerTrigger>
+          </Button>
           <DrawerContent className="lg:h-[700px] lg:ml-auto lg:w-[700px]">
             <DrawerHeader className="md:p-0 md:mx-auto md:w-[484px]">
               <DrawerTitle>Add new Task</DrawerTitle>
@@ -110,7 +111,7 @@ export const action: ActionFunction = async ({ request }) => {
         session?.user?.id ?? undefined
       );
 
-      return redirect("/");
+      return { ok: true };
     } else {
       console.error("The date is invalid");
     }

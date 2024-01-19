@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import {
@@ -15,9 +15,22 @@ export default function AddTaskInput() {
   const [date, setDate] = useState<Date>();
   const fetcher = useFetcher();
 
+  let $form = useRef<HTMLFormElement>(null);
+
+  useEffect(
+    function resetFormOnSuccess() {
+      // @ts-ignore
+      if (fetcher.state === "idle" && fetcher.data?.ok) {
+        $form.current?.reset();
+      }
+    },
+    [fetcher.state, fetcher.data]
+  );
+
   return (
     <div className="grid md:flex flex-col md:mx-auto gap-4">
       <fetcher.Form
+        ref={$form}
         method="post"
         action="/?index"
         className="grid md:flex flex-col md:mx-auto gap-4"
