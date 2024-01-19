@@ -2,7 +2,7 @@ import AddTaskInput from "~/components/add-task-input";
 import TaskCard from "~/components/task-card";
 import { LoaderFunction, LoaderFunctionArgs, json } from "@remix-run/node";
 import { getTasks } from "~/lib/queries.server";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigation } from "@remix-run/react";
 import { ActionFunction, redirect } from "@remix-run/node";
 import { createTask } from "~/lib/queries.server";
 import type { task as TaskType } from "@prisma/client";
@@ -32,11 +32,53 @@ export const loader: LoaderFunction = async ({
   const data = await getTasks(session?.user?.id ?? undefined);
 
   return json({ data, ok: true });
-  // return data;
+};
+
+export const action: ActionFunction = async ({ request }) => {
+  const response = new Response();
+
+  const supabaseClient = getSupabaseClient(request, response);
+
+  const {
+    data: { session },
+  } = await supabaseClient.auth.getSession();
+
+  const form = await request.formData();
+
+  const title = form.get("title");
+  const date = form.get("date");
+  const label = form.get("label");
+
+  if (title && date && label) {
+    const parsedDate = new Date(date.toString());
+
+    if (!isNaN(parsedDate.getTime())) {
+      await createTask(
+        String(title),
+        parsedDate,
+        String(label),
+        session?.user?.id ?? undefined
+      );
+
+      return { ok: true };
+    } else {
+      console.error("The date is invalid");
+    }
+  } else {
+    console.error("Fields are missing from the form");
+  }
+
+  return redirect("/error");
 };
 
 export default function Home() {
   const { data } = useLoaderData<typeof loader>();
+  const navigation = useNavigation();
+
+  // important to check you're submitting to the action
+  // for the pending UI, not just any action
+  const isSubmitting = navigation.formAction === "/";
+  console.log(isSubmitting);
 
   return (
     <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">
@@ -84,40 +126,3 @@ export default function Home() {
     </main>
   );
 }
-
-export const action: ActionFunction = async ({ request }) => {
-  const response = new Response();
-
-  const supabaseClient = getSupabaseClient(request, response);
-
-  const {
-    data: { session },
-  } = await supabaseClient.auth.getSession();
-
-  const form = await request.formData();
-
-  const title = form.get("title");
-  const date = form.get("date");
-  const label = form.get("label");
-
-  if (title && date && label) {
-    const parsedDate = new Date(date.toString());
-
-    if (!isNaN(parsedDate.getTime())) {
-      await createTask(
-        String(title),
-        parsedDate,
-        String(label),
-        session?.user?.id ?? undefined
-      );
-
-      return { ok: true };
-    } else {
-      console.error("The date is invalid");
-    }
-  } else {
-    console.error("Fields are missing from the form");
-  }
-
-  return redirect("/error");
-};
