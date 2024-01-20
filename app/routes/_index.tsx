@@ -76,8 +76,7 @@ export default function Home() {
   const { data } = useLoaderData<typeof loader>();
   const fetcher = useFetcher({ key: "input" });
   const isAdding = fetcher.state !== "idle";
-  console.log(fetcher.state);
-  console.log(fetcher.formData?.get("title"));
+
   return (
     <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">
       <div className="flex mt-16 lg:mt-0  w-full justify-between">
