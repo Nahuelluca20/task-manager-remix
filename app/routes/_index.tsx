@@ -73,12 +73,6 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function Home() {
   const { data } = useLoaderData<typeof loader>();
-  const navigation = useNavigation();
-
-  // important to check you're submitting to the action
-  // for the pending UI, not just any action
-  const isSubmitting = navigation.formAction === "/";
-  console.log(isSubmitting);
 
   return (
     <main className="flex-1 flex flex-col p-4 md:gap-8 md:p-6">

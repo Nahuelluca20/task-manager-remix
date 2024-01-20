@@ -29,7 +29,7 @@ export default function TaskCard({
   const fetcher = useFetcher();
   const [isCompleted, setIsCompleted] = useState<boolean>(complete);
   const isSubmitting = fetcher.state === "submitting";
-
+  const isDeleting = fetcher.state !== "idle";
   const handleCheckboxChange = () => {
     // Update the UI optimistically
     setIsCompleted(!isCompleted);
@@ -38,7 +38,11 @@ export default function TaskCard({
   };
 
   return (
-    <Card className="mt-4 pt-2">
+    <Card
+      className={clsx("mt-4 pt-2", {
+        "opacity-25": isDeleting,
+      })}
+    >
       <CardContent className="flex flex-wrap flex-row items-start gap-4">
         <fetcher.Form method="post" action="/set-completed">
           <input type="hidden" name="taskId" defaultValue={taskId} />
