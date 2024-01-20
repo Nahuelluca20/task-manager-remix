@@ -13,7 +13,7 @@ import { useFetcher } from "@remix-run/react";
 
 export default function AddTaskInput() {
   const [date, setDate] = useState<Date>();
-  const fetcher = useFetcher();
+  const fetcher = useFetcher({ key: "input" });
 
   let $form = useRef<HTMLFormElement>(null);
 

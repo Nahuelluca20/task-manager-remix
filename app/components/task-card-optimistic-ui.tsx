@@ -1,50 +1,25 @@
 import clsx from "clsx";
 import { Card, CardContent } from "./ui/card";
-import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import { Badge } from "./ui/badge";
-import { useFetcher } from "@remix-run/react";
-import { useState } from "react";
-import Spinner from "./spinner";
-import { Button } from "./ui/button";
-import { ArchiveIcon, Trash } from "lucide-react";
 
-export default function TaskCard({
+export default function TaskCardOptimisticUI({
   title,
   date,
-  taskId,
   label,
-  complete,
-  archive,
-  url,
 }: {
-  title: string;
-  date: string;
-  taskId: string;
-  label: string;
-  complete: boolean;
-  archive: boolean;
-  url: string;
+  title: string | null | undefined;
+  date: string | null | undefined;
+  label: string | null | undefined;
 }) {
-  const fetcher = useFetcher();
-  const [isCompleted, setIsCompleted] = useState<boolean>(complete);
-  const isSubmitting = fetcher.state === "submitting";
-  const isDeleting = fetcher.state !== "idle";
-  const handleCheckboxChange = () => {
-    // Update the UI optimistically
-    setIsCompleted(!isCompleted);
-    // Make the server request
-    fetcher.submit({ method: "post", action: "/set-completed" });
-  };
-
   return (
     <Card
-      className={clsx("mt-4 pt-2", {
-        "opacity-25": isDeleting,
+      className={clsx("mt-4 pt-2 pl-8", {
+        // "opacity-25": isDeleting,
       })}
     >
       <CardContent className="flex flex-wrap flex-row items-start gap-4">
-        <fetcher.Form method="post" action="/set-completed">
+        {/* <fetcher.Form method="post" action="/set-completed">
           <input type="hidden" name="taskId" defaultValue={taskId} />
 
           <input
@@ -62,30 +37,30 @@ export default function TaskCard({
             className="mt-[5px]"
             id={taskId}
           />
-        </fetcher.Form>
+        </fetcher.Form> */}
         <div className="space-y-1 leading-none">
           <div className="flex items-center gap-2">
             <Label
               className={clsx(
-                "text-sm sm:text-base font-medium",
-                !isCompleted && isSubmitting
-                  ? ""
-                  : isCompleted || isSubmitting
-                  ? "text-gray-600 line-through decoration-[3px]"
-                  : ""
+                "text-sm sm:text-base font-medium"
+                // !isCompleted && isSubmitting
+                //   ? ""
+                //   : isCompleted || isSubmitting
+                //   ? "text-gray-600 line-through decoration-[3px]"
+                //   : ""
               )}
-              htmlFor={taskId}
+              // htmlFor={taskId}
             >
-              {title}
+              {title || ""}
             </Label>
-            <Badge className="max-h-6">{label}</Badge>
-            {isSubmitting && <Spinner className="h-5 w-5" />}
+            <Badge className="max-h-6">{label || ""}</Badge>
+            {/* {isSubmitting && <Spinner className="h-5 w-5" />} */}
           </div>
-          <p className="text-sm m-0 text-gray-500 dark:text-gray-400">
-            terminar antes del {date}
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            terminar antes del {date || ""}
           </p>
         </div>
-        <div className="flex flex-grow gap-2 justify-end">
+        {/* <div className="flex flex-grow gap-2 justify-end">
           <fetcher.Form method="post" action="/card-actions">
             <input type="hidden" name="action" value="archive" />
             <input type="hidden" name="taskId" defaultValue={taskId} />
@@ -117,7 +92,7 @@ export default function TaskCard({
               Delete
             </Button>
           </fetcher.Form>
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   );
