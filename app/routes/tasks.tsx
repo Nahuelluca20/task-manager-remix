@@ -5,14 +5,6 @@ import CardTaskArchived from "~/components/card-task-archived";
 import type { task as TaskType } from "@prisma/client";
 import { getSupabaseClient } from "~/lib/supabase.server";
 
-// export const loader: LoaderFunction = async ({ request }) => {
-//   const url = new URL(request.url);
-//   const query = url.searchParams.get("");
-//   const data = query && getTaskByLabel(String(query));
-
-//   return data;
-// };
-
 export const loader: LoaderFunction = async ({
   request,
 }: LoaderFunctionArgs) => {
