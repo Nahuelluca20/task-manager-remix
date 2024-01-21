@@ -5,7 +5,7 @@ export async function getTasks(userId?: string) {
     where: { archive: false, user_id: userId || null },
     orderBy: [
       {
-        title: "desc",
+        created_at: "desc",
       },
     ],
   });
@@ -18,7 +18,7 @@ export async function getArchiveTasks(userId?: string) {
     where: { archive: true, user_id: userId || null },
     orderBy: [
       {
-        title: "desc",
+        created_at: "desc",
       },
     ],
   });

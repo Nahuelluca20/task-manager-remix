@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-1.0.x"]
@@ -19,4 +16,51 @@ model task {
   archive     Boolean  @default(false)
   completed   Boolean  @default(false)
   user_id     String?
+  created_at  DateTime @default(dbgenerated("now()")) @db.Timestamp(6)
+}
+
+model Account {
+  id       String    @id
+  email    String    @unique
+  Board    Board[]
+  Password Password?
+}
+
+model Board {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  accountId String
+  label     String
+  Account   Account  @relation(fields: [accountId], references: [id])
+  Column    Column[]
+  Item      Item[]
+}
+
+model Column {
+  id      String @id
+  name    String
+  order   Float  @default(0)
+  boardId Int
+  Board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  Item    Item[]
+}
+
+model Item {
+  id       String  @id
+  title    String
+  content  String?
+  order    Float
+  columnId String
+  boardId  Int
+  Board    Board   @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  Column   Column  @relation(fields: [columnId], references: [id], onDelete: Cascade)
+}
+
+model Password {
+  id        String  @id
+  salt      String
+  hash      String
+  accountId String  @unique
+  Account   Account @relation(fields: [accountId], references: [id])
 }

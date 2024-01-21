@@ -28,11 +28,14 @@ export default function TaskCard({
 }) {
   const fetcher = useFetcher();
   const [isCompleted, setIsCompleted] = useState<boolean>(complete);
+  const [currentAction, setCurrentAction] = useState<string | null>(null);
   const isSubmitting = fetcher.state === "submitting";
   const isDeleting = fetcher.state !== "idle";
   const handleCheckboxChange = () => {
     // Update the UI optimistically
     setIsCompleted(!isCompleted);
+    // Set the current action to 'complete'
+    setCurrentAction("complete");
     // Make the server request
     fetcher.submit({ method: "post", action: "/set-completed" });
   };
@@ -40,7 +43,7 @@ export default function TaskCard({
   return (
     <Card
       className={clsx("mt-4 pt-2", {
-        "opacity-25": isDeleting,
+        "opacity-25": isDeleting && currentAction === "delete",
       })}
     >
       <CardContent className="flex flex-wrap flex-row items-start gap-4">
@@ -112,7 +115,11 @@ export default function TaskCard({
               defaultValue={String(archive)}
             />
 
-            <Button variant={"destructive"} className="gap-2">
+            <Button
+              variant={"destructive"}
+              className="gap-2"
+              onClick={() => setCurrentAction("delete")}
+            >
               <Trash className="h-4 w-4" />
               Delete
             </Button>
