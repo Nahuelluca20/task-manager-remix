@@ -32,7 +32,7 @@ export const loader: LoaderFunction = async ({
 export default function Archive() {
   const data = useLoaderData<typeof loader>();
 
-  if (data.length <= 0) {
+  if (data?.length <= 0) {
     return (
       <main className="flex-1 mt-4 flex flex-col p-4 md:gap-8 md:p-6">
         <div className="flex items-center mt-12 lg:mt-0">
@@ -51,7 +51,7 @@ export default function Archive() {
         <h1 className="font-semibold text-lg md:text-2xl">Today's tasks</h1>
       </div>
       <div className="border shadow-sm rounded-lg pb-4 px-4 mt-4 mb-4 md:mb-0">
-        {data.map((task: TaskType) => (
+        {data?.map((task: TaskType) => (
           <TaskCard
             url="/archive"
             key={`task-${task.id}`}

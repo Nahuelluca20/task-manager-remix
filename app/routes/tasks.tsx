@@ -31,7 +31,7 @@ export default function Tasks() {
       <h2 className="text-xl font-semibold mt-12 lg:mt-0">Tasks</h2>
       <div className="flex gap-4">
         <div className="flex flex-col w-72 gap-4">
-          {data.map((task: TaskType) => (
+          {data?.map((task: TaskType) => (
             <CardTaskArchived
               key={`task-${task.id}`}
               taskId={task.id}

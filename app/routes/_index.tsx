@@ -110,11 +110,11 @@ export default function Home() {
             )}
           />
         )}
-        {data.length <= 0 ? (
+        {data?.length <= 0 ? (
           <p className="text-center font-bold text-lg mt-2">No tasks found.</p>
         ) : (
           <>
-            {data.map((task: TaskType) => (
+            {data?.map((task: TaskType) => (
               <TaskCard
                 key={`task-${task.id}`}
                 taskId={task.id}
